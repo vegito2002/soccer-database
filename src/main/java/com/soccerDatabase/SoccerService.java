@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.Objects;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class SoccerService {
 
     private Sql2o db;
@@ -351,8 +354,11 @@ public class SoccerService {
                     .executeAndFetch(EnglandPlayer.class);
 
             for(EnglandPlayer eachPlayer : englandPlayers) {
-                System.out.println(eachPlayer);
+                eachPlayer.calculateDateNumber();
             }
+
+
+
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandPlayer table", ex);
             throw new SoccerServiceException("Failed to initialize EnglandPlayer table", ex);

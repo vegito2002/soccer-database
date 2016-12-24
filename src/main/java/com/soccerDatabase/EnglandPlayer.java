@@ -1,5 +1,8 @@
 package com.soccerDatabase;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Created by vegito2002 on 12/23/16.
  */
@@ -78,5 +81,12 @@ public class EnglandPlayer {
         this.weight = weight;
         this.birthday = birthday;
         this.birthdayNumber = birthdayNumber;
+    }
+
+    public void calculateDateNumber() {
+        String[] dateWords = getBirthday().split(" ");
+        LocalDate dateLocal = LocalDate.parse(dateWords[0], DateTimeFormatter.ISO_LOCAL_DATE);
+        int dateInt = 86400 * (int) dateLocal.toEpochDay();
+        setBirthdayNumber(dateInt);
     }
 }
