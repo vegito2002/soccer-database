@@ -418,31 +418,24 @@ public class SoccerService {
 
             System.out.printf("%d entries currently in the map%n", maxCounters.keySet().size());
 
-            for (Map.Entry eachEntry : maxCounters.entrySet() ) {
-                System.out.printf("%d, %d%n", eachEntry.getKey(), eachEntry.getValue());
+            for (AnyPlayerAttributes eachAttributes : allPlayerAttributes ) {
+                if(maxCounters.get(eachAttributes.getId()) == eachAttributes.getCounter()) {
+                    englandPlayerAttributes.add(new EnglandPlayerAttributes(eachAttributes.getId(),eachAttributes.getRating(),eachAttributes.getPotential(),eachAttributes.getFoot()));
+                }
             }
 
-//            String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
-//                    " SELECT E1.playerId AS id, P1.player_name AS name, P1.height AS height, P1.weight AS weight, P1.birthday AS birthday, 0 AS birthdayNumber " +
-//                    "                    FROM EnglandMembership AS E1, Player AS P1 " +
-//                    "                    WHERE E1.playerId=P1.player_api_id;  ";
-//            conn.createQuery(sqlUpdateTableEnglandPlayer).executeUpdate();
-//
-//            String sqlFetchEnglandPlayers = " SELECT * FROM EnglandPlayer; ";
-//            List<EnglandPlayer> englandPlayers = conn.createQuery(sqlFetchEnglandPlayers)
-//                    .executeAndFetch(EnglandPlayer.class);
-//
-//            conn.createQuery( " DELETE FROM EnglandPlayer; ").executeUpdate();
-//
-//            String sqlInsertPlayer = " INSERT INTO EnglandPlayer VALUES " +
-//                    " ( :id, :name, :height, :weight, :birthday, :birthdayNumber ); ";
-//
-//            for(EnglandPlayer eachPlayer : englandPlayers) {
-//                eachPlayer.calculateDateNumber();
-//                conn.createQuery(sqlInsertPlayer)
-//                        .bind(eachPlayer)
-//                        .executeUpdate();
-//            }
+            System.out.printf("%d tuples with the maximum counter for each playerId are selected %n", englandPlayerAttributes.size());
+
+            String sqlInsertPlayerAttributes = " INSERT INTO EnglandPlayerAttributes VALUES (:id, "
+                    + " :rating, "
+                    + " :potential, "
+                    + " :foot); ";
+
+            for (EnglandPlayerAttributes eachAttributes : englandPlayerAttributes ) {
+                conn.createQuery(sqlInsertPlayerAttributes)
+                        .bind(eachAttributes)
+                        .executeUpdate();
+            }
 
 //            System.out.printf("%d tuples put back into table EnglandPlayer with birthdayNumber generated%n", englandPlayers.size());
 
