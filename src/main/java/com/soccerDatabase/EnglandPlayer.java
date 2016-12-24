@@ -10,5 +10,73 @@ public class EnglandPlayer {
     private String birthday;
     private int birthdayNumber;
 
+    @Override
+    public String toString() {
+        return "EnglandPlayer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", birthday='" + birthday + '\'' +
+                ", birthdayNumber=" + birthdayNumber +
+                '}';
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public int getBirthdayNumber() {
+        return birthdayNumber;
+    }
+
+    public void setBirthdayNumber(int birthdayNumber) {
+        this.birthdayNumber = birthdayNumber;
+    }
+
+    public EnglandPlayer(int id, String name, double height, double weight, String birthday, int birthdayNumber) {
+
+        this.id = id;
+        this.name = name;
+        this.height = height;
+        this.weight = weight;
+        this.birthday = birthday;
+        this.birthdayNumber = birthdayNumber;
+    }
 }
