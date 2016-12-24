@@ -26,8 +26,12 @@ public class EnglandMatch {
 
 
     public void expandTeamNames(List<EnglandTeam> teams) {
+        System.out.printf("Expanding team names for team %s and team %s%n", getHomeTeam(), getAwayTeam());
+
         setHomeTeam(findFullTeamName(this.homeTeam,teams));
         setAwayTeam(findFullTeamName(this.awayTeam, teams));
+
+        System.out.printf("Expanded team names are %s and %s%n", getHomeTeam(), getAwayTeam());
     }
 
     private String findFullTeamName(String teamName, List<EnglandTeam> teams) {

@@ -27,69 +27,6 @@ public class SoccerService {
 
     private final Logger logger = LoggerFactory.getLogger(SoccerService.class);
 
-    private final String SQL_CREATETABLE_MATCHRECORDS ="CREATE TABLE IF NOT EXISTS MatchRecords ( "
-            + " dateString TEXT,  "
-            + " homeTeam TEXT,  "
-            + " awayTeam TEXT,  "
-            + " fullTimeResult TEXT,  "
-            + " halfTimeResult TEXT,  "
-            + " referee TEXT, "
-            + " dateNumber INTEGER,  "
-            + " fthg INTEGER,  "
-            + " ftag INTEGER,  "
-            + " hthg INTEGER,  "
-            + " htag INTEGER, "
-            + " homeShot INTEGER,  "
-            + " awayShot INTEGER,  "
-            + " hst INTEGER,  "
-            + " ast INTEGER,  "
-            + " hf INTEGER,  "
-            + " af INTEGER, "
-            + " hc INTEGER,  "
-            + " ac INTEGER,  "
-            + " hy INTEGER,  "
-            + " ay INTEGER,  "
-            + " hr INTEGER,  "
-            + " ar INTEGER, "
-            + " PRIMARY KEY(dateNumber, homeTeam, awayTeam)); ";
-    private final String SQL_CREATETABLE_UPDATELOG = " CREATE TABLE IF NOT EXISTS updatelog "
-            + " (sourcename TEXT NOT NULL, "
-            + " updatecount INTEGER NOT NULL, "
-            + " PRIMARY KEY(sourcename)); ";
-    private final String SQL_CREATETABLE_ENGLANDTEAM = "CREATE TABLE IF NOT EXISTS EnglandTeam "
-            + " (id INTEGER NOT NULL, "
-            + " teamName TEXT, "
-            + " teamCode TEXT, "
-            + " city TEXT, "
-            + " PRIMARY KEY(id));";
-    private final String SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES = " CREATE TABLE IF NOT EXISTS EnglandTeamAttributes "
-            + " (id INTEGER NOT NULL,  "
-            + " buildUpPlaySpeedClass TEXT, "
-            + " buildUpPlayDribblingClass TEXT, "
-            + " buildUpPlayPassingClass TEXT, "
-            + " buildUpPlayPositioningClass TEXT, "
-            + " chanceCreationPassingClass TEXT, "
-            + " chanceCreationCrossingClass TEXT, "
-            + " chanceCreationShootingClass TEXT, "
-            + " chanceCreationPositioningClass TEXT, "
-            + " defencePressureClass TEXT, "
-            + " defenceAggressionClass TEXT, "
-            + " defenceTeamWidthClass TEXT, "
-            + " defenceDefenderLineClass TEXT, "
-            + " PRIMARY KEY(id)); ";
-    private final String SQL_CREATETABLE_ENGLAND_MEMBERSHIP = " CREATE TABLE IF NOT EXISTS EnglandMembership "
-            + " (teamId INTEGER NOT NULL, "
-            + " playerId INTEGER NOT NULL, "
-            + " PRIMARY KEY(teamId, playerId)); ";
-    private final String SQL_CREATETABLE_ENGLAND_PLAYER = " CREATE TABLE IF NOT EXISTS EnglandPlayer "
-            + " (id INTEGER NOT NULL, "
-            + " name TEXT, "
-            + " height REAL, "
-            + " weight REAL, "
-            + " birthday TEXT, "
-            + " birthdayNumber INTEGER, "
-            + " PRIMARY KEY(id)); ";
-
     /**
      * Construct the model with a pre-defined datasource. The current implementation
      * also ensures that the DB schema is created if necessary.
@@ -107,12 +44,13 @@ public class SoccerService {
         //program to mostly self-contained. But this is not always what you want;
         //sometimes you want to create the schema externally via a script.
         try (Connection conn = db.open()) {
-            conn.createQuery(SQL_CREATETABLE_MATCHRECORDS).executeUpdate();
-            conn.createQuery(SQL_CREATETABLE_UPDATELOG).executeUpdate();
-            conn.createQuery(SQL_CREATETABLE_ENGLANDTEAM).executeUpdate();
-            conn.createQuery(SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES).executeUpdate();
-            conn.createQuery(SQL_CREATETABLE_ENGLAND_MEMBERSHIP).executeUpdate();
-            conn.createQuery(SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
+            StaticQueryGenerator generator = new StaticQueryGenerator();
+            conn.createQuery(generator.SQL_CREATETABLE_MATCHRECORDS).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_UPDATELOG).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLANDTEAM).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_MEMBERSHIP).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
@@ -251,12 +189,16 @@ public class SoccerService {
         try (Connection conn = db.open()) {
             if(!checkUpdatePermission("CSV", conn)) return;
 
+            System.out.println("Starting to initialize data from CSV");
+
             CSVReader reader = new CSVReader();
             List<EnglandMatch> matches = reader.readMatchData();
 
             insertMatchRecords(matches, conn);
 
             conn.createQuery("vacuum; ").executeUpdate();
+
+            System.out.println("Data from E0.CSV sucessfully initialized into database.sqlite");
 
             updateLog("CSV", conn);
 
@@ -270,6 +212,7 @@ public class SoccerService {
     public void initializeTeam() throws SoccerServiceException {
         try (Connection conn = db.open()) {
             if(!checkUpdatePermission("Team", conn)) return;
+            System.out.println("Starting to initialize table EnglandTeam");
 
             String sqlFetchEnglandMatches = " SELECT * from MatchRecords; ";
 
@@ -310,6 +253,8 @@ public class SoccerService {
                         .executeUpdate();
             }
 
+            System.out.printf("%d tuples put back into table EnglandTeam in database.sqlite. Initialization complete %n", englandTeams.size());
+
             updateLog("Team", conn);
 
         } catch (Sql2oException ex) {
@@ -321,6 +266,7 @@ public class SoccerService {
     public void initializeTeamAttributes() throws SoccerServiceException {
         try (Connection conn = db.open()) {
             if (!checkUpdatePermission("TeamAttributes", conn)) return;
+            System.out.println("Starting to initialize table EnglandTeamAttributes");
 
             String sqlFetchTeamAttributes = " SELECT team_api_id,  "
                     + " buildUpPlaySpeedClass, "
@@ -381,7 +327,7 @@ public class SoccerService {
                         .bind(eachAttributes)
                         .executeUpdate();
             }
-
+            System.out.printf("%d tuples put back into table EnglandTeamAttributes, initialization complete%n", englandAttributes.size());
             updateLog("TeamAttributes", conn);
 
 
@@ -404,31 +350,29 @@ public class SoccerService {
     public void initializeTeamMemberShip() throws SoccerServiceException {
         try (Connection conn = db.open()) {
 
-            System.out.println(1);
+            if (!checkUpdatePermission("TeamMembership", conn));
+
+            System.out.println("Starting initializing table EnglandMembership");
 
             Map<String, List<String>> rawMembership = new ManualDataGenerator().manualSetPlayerMembership();
             List<EnglandTeam> englandTeams = conn.createQuery(" SELECT * FROM EnglandTeam; ").executeAndFetch(EnglandTeam.class);
 
             List<EnglandMembership> englandMemberships = new ArrayList<>();
 
-            System.out.println(2);
-
             int tempTeamId;
             Integer tempPlayerId;
 
             for (Map.Entry eachMembership : rawMembership.entrySet() ) {
 
-                System.out.println((String)eachMembership.getKey());
+                System.out.printf("Trying to create roster for team %s%n",(String)eachMembership.getKey());
 
                 tempTeamId = getTeamIdByName((String)eachMembership.getKey(), englandTeams);
 
-                System.out.println(tempTeamId);
-
-//                List<String> playersInTeam =
+                System.out.printf("The id for this team is %d%n",tempTeamId);
 
                 for (String eachPlayerName : (List<String>)eachMembership.getValue()) {
 
-                    System.out.printf("Trying to find %s%n", eachPlayerName);
+                    System.out.printf("Found a player %s for team %d, trying to find his playerId%n", eachPlayerName,tempTeamId);
 
                     String sqlFetchPlayerIdByName = " SELECT player_api_id FROM Player WHERE player_name = :nameParam; ";
                     tempPlayerId = conn.createQuery(sqlFetchPlayerIdByName)
@@ -439,8 +383,22 @@ public class SoccerService {
                         return;
                     }
                     System.out.printf("id for player %s is %d%n", eachPlayerName, tempPlayerId);
+                    englandMemberships.add(new EnglandMembership(tempTeamId, tempPlayerId));
+
                 }
             }
+
+            String sqlInsertMembership = " INSERT INTO EnglandMembership VALUES( :teamId, :playerId); ";
+            for (EnglandMembership eachMembership : englandMemberships ) {
+                conn.createQuery(sqlInsertMembership)
+                        .bind(eachMembership)
+                        .executeUpdate();
+            }
+
+            System.out.printf("%d tuples put back into table EnglandMembership in database.sqlite file%n", englandMemberships.size());
+
+            updateLog("TeamMembership", conn);
+
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandMembership table", ex);
             throw new SoccerServiceException("Failed to initialize EnglandMembership table", ex);
@@ -449,26 +407,26 @@ public class SoccerService {
 
     private int getTeamIdByName(String teamName, List<EnglandTeam> teams) {
         for (EnglandTeam eachTeam : teams ) {
-            if (eachTeam.getTeamName().equals(teamName) || eachTeam.getTeamName().contains(teamName)) return eachTeam.getId();
+            if (eachTeam.getTeamName().equals(teamName)) return eachTeam.getId();
         }
         return -1;
     }
 
     private boolean checkUpdatePermission(String sourceName, Connection conn) throws SoccerServiceException {
-        String sqlQueryLog = String.format(" SELECT updatecount FROM updatelog WHERE sourcename= '%s' ; ", sourceName);
+        System.out.printf("Checking permission to update from source %s%n", sourceName);
 
-        System.out.println(sqlQueryLog);
+        String sqlQueryLog = String.format(" SELECT updatecount FROM updatelog WHERE sourcename= '%s' ; ", sourceName);
 
         Integer updateCount = conn.createQuery(sqlQueryLog)
                 .executeScalar(Integer.class);
 
-        System.out.println("count fetched");
+        System.out.printf("Historical update count for the source %s is fetched from the database%n", sourceName);
 
         if (updateCount == null) {
-            System.out.println("No update on this source yet, permission granted");
+            System.out.printf("No update has been performed on the source of %s, permission granted%n", sourceName);
             return true;
         }
-        System.out.println("This source already updated, permission denied");
+        System.out.printf("The source of %s already updated, permission denied%n", sourceName);
         return false;
     }
 
