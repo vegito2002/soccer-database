@@ -51,6 +51,7 @@ public class SoccerService {
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_MEMBERSHIP).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
@@ -336,21 +337,32 @@ public class SoccerService {
             throw new SoccerServiceException("Failed to initialize EnglandTeamAttributes table", ex);
         }
     }
-//
-//    public void initializePlayer() throws SoccerServiceException {
-//        try (Connection conn = db.open()) {
-//            String sqlFetchAllPlayers
-//            List<EnglandPlayer> allPlayers =
-//        } catch (Sql2oException ex) {
-//            logger.error("Failed to initialize EnglandPlayer table", ex);
-//            throw new SoccerServiceException("Failed to initialize EnglandPlayer table", ex);
-//        }
-//    }
+
+    public void initializePlayer() throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
+                    " SELECT E1.playerId AS id, P1.player_name AS name, P1.height AS height, P1.weight AS weight, P1.birthday AS birthday, 0 AS birthdayNumber " +
+                    "                    FROM EnglandMembership AS E1, Player AS P1 " +
+                    "                    WHERE E1.playerId=P1.player_api_id;  ";
+            conn.createQuery(sqlUpdateTableEnglandPlayer).executeUpdate();
+
+            String sqlFetchEnglandPlayers = " SELECT * FROM EnglandPlayer; ";
+            List<EnglandPlayer> englandPlayers = conn.createQuery(sqlFetchEnglandPlayers)
+                    .executeAndFetch(EnglandPlayer.class);
+
+            for(EnglandPlayer eachPlayer : englandPlayers) {
+                System.out.println(eachPlayer);
+            }
+        } catch (Sql2oException ex) {
+            logger.error("Failed to initialize EnglandPlayer table", ex);
+            throw new SoccerServiceException("Failed to initialize EnglandPlayer table", ex);
+        }
+    }
 
     public void initializeTeamMemberShip() throws SoccerServiceException {
         try (Connection conn = db.open()) {
 
-            if (!checkUpdatePermission("TeamMembership", conn));
+            if (!checkUpdatePermission("TeamMembership", conn)) return;
 
             System.out.println("Starting initializing table EnglandMembership");
 
