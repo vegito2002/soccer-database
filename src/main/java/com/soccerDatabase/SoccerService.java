@@ -394,10 +394,32 @@ public class SoccerService {
             List<AnyPlayerAttributes> allPlayerAttributes = conn.createQuery(sqlFetchAllPlayerAttributes)
                     .executeAndFetch(AnyPlayerAttributes.class);
 
+            System.out.printf("%d tuples fetched into memory%n", allPlayerAttributes.size());
+
             List<EnglandPlayerAttributes> englandPlayerAttributes = new ArrayList<>();
 
+            Map<Integer, Integer> maxCounters = new HashMap<>();
+
+            Integer tempCounter;
+
             for (AnyPlayerAttributes eachAttributes : allPlayerAttributes) {
-                System.out.println(eachAttributes);
+
+                tempCounter = maxCounters.get(eachAttributes.getId());
+
+                if (tempCounter == null) {
+                    maxCounters.put(eachAttributes.getId(), 0);
+                    tempCounter = 0;
+                }
+
+                if (eachAttributes.getCounter() > tempCounter && checkPlayerAttributesEntryEligibility(eachAttributes)) {
+                    maxCounters.put(eachAttributes.getId(), eachAttributes.getCounter());
+                }
+            }
+
+            System.out.printf("%d entries currently in the map%n", maxCounters.keySet().size());
+
+            for (Map.Entry eachEntry : maxCounters.entrySet() ) {
+                System.out.printf("%d, %d%n", eachEntry.getKey(), eachEntry.getValue());
             }
 
 //            String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
@@ -430,6 +452,10 @@ public class SoccerService {
             logger.error("Failed to initialize EnglandPlayerAttributes table", ex);
             throw new SoccerServiceException("Failed to initialize EnglandPlayerAttributes table", ex);
         }
+    }
+
+    private boolean checkPlayerAttributesEntryEligibility(AnyPlayerAttributes arg) {
+        return (arg.getRating()>0 ) && (arg.getPotential()>0 ) && (arg.getFoot()!=null );
     }
 
     public void initializeTeamMemberShip() throws SoccerServiceException {
