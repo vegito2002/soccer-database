@@ -82,6 +82,7 @@ public class SoccerController {
             try {
                 soccerService.readCSV();
                 soccerService.initializeTeam();
+                soccerService.initializeTeamAttributes();
                 return true;
             } catch  (SoccerService.SoccerServiceException ex) {
                 logger.error("Failed to fetch the list of todos");

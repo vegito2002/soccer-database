@@ -59,6 +59,21 @@ public class SoccerService {
             + " teamCode TEXT, "
             + " city TEXT, "
             + " PRIMARY KEY(id));";
+    private final String SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES = " CREATE TABLE IF NOT EXISTS EnglandTeamAttribute "
+            + " (id INTEGER NOT NULL,  "
+            + " buildUpPlaySpeedClass TEXT, "
+            + " buildUpPlayDribblingClass TEXT, "
+            + " buildUpPlayPassingClass TEXT, "
+            + " buildUpPlayPositioningClass TEXT, "
+            + " chanceCreationPassingClass TEXT, "
+            + " chanceCreationCrossingClass TEXT, "
+            + " chanceCreationShootingClass TEXT, "
+            + " chanceCreationPositioningClass TEXT, "
+            + " defencePressureClass TEXT, "
+            + " defenceAggressionClass TEXT, "
+            + " defenceTeamWidthClass TEXT, "
+            + " defenceDefenderLineClass TEXT, "
+            + " PRIMARY KEY(id)); ";
 
     /**
      * Construct the model with a pre-defined datasource. The current implementation
@@ -69,9 +84,9 @@ public class SoccerService {
     public SoccerService(DataSource dataSource) throws SoccerServiceException {
         db = new Sql2o(dataSource);
 
-//        try (Connection conn = db.open()) {
-//            String sql = "CREATE TABLE IF NOT "
-//        }
+        //        try (Connection conn = db.open()) {
+        //            String sql = "CREATE TABLE IF NOT "
+        //        }
 
         //Create the schema for the database if necessary. This allows this
         //program to mostly self-contained. But this is not always what you want;
@@ -80,7 +95,8 @@ public class SoccerService {
             conn.createQuery(SQL_CREATETABLE_MATCHRECORDS).executeUpdate();
             conn.createQuery(SQL_CREATETABLE_UPDATELOG).executeUpdate();
             conn.createQuery(SQL_CREATETABLE_ENGLANDTEAM).executeUpdate();
-            conn.createQuery(" DROP TABLE Match; ").executeUpdate();
+            conn.createQuery(SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES).executeUpdate();
+            conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
         } catch (Sql2oException ex) {
@@ -197,9 +213,6 @@ public class SoccerService {
         }
     }
 
-    //-----------------------------------------------------------------------------//
-    // Helper Classes and Methods
-    //-----------------------------------------------------------------------------//
 
     public static class SoccerServiceException extends Exception {
         public SoccerServiceException(String message, Throwable cause) {
@@ -242,7 +255,6 @@ public class SoccerService {
             if(!checkUpdatePermission("Team", conn)) return;
 
             String sqlFetchEnglandMatches = " SELECT * from MatchRecords; ";
-
 
             List<EnglandMatch> englandMatches = conn.createQuery(sqlFetchEnglandMatches)
                     .executeAndFetch(EnglandMatch.class);
@@ -291,7 +303,56 @@ public class SoccerService {
     }
 
     public void initializeTeamAttributes() throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            if (!checkUpdatePermission("TeamAttribute", conn)) return;
 
+            String sqlFetchTeamAttributes = " SELECT team_api_id,  "
+                    + " buildUpPlaySpeedClass, "
+                    + " buildUpPlayDribblingClass, "
+                    + " buildUpPlayPassingClass, "
+                    + " buildUpPlayPositioningClass, "
+                    + " chanceCreationPassingClass, "
+                    + " chanceCreationCrossingClass, "
+                    + " chanceCreationShootingClass, "
+                    + " chanceCreationPositioningClass, "
+                    + " defencePressureClass, "
+                    + " defenceAggressionClass, "
+                    + " defenceTeamWidthClass, "
+                    + " defenceDefenderLineClass " +
+                    "FROM Team_Attributes T1 " +
+                    "WHERE id = (SELECT max(id) as max_id " +
+                    "            FROM Team_Attributes T2 " +
+                    "            WHERE T2.team_api_id=T1.team_api_id " +
+                    "            GROUP BY team_api_id);  ";
+
+            List<EnglandTeamAttributes> allAttributes = conn.createQuery(sqlFetchTeamAttributes)
+                    .addColumnMapping("team_api_id", "id")
+                    .executeAndFetch(EnglandTeamAttributes.class);
+
+            String sqlFetchEnglandTeam = " SELECT * FROM EnglandTeam; ";
+            List<EnglandTeam> englandTeams = conn.createQuery(sqlFetchEnglandTeam)
+                    .executeAndFetch(EnglandTeam.class);
+
+            //            for (EnglandTeam eachTeam : englandTeams ) System.out.println(eachTeam);
+
+            List<EnglandTeamAttributes> englandAttributes = new ArrayList<>();
+
+            for (EnglandTeamAttributes eachAttributes : allAttributes ) {
+                for(EnglandTeam eachTeam : englandTeams ) {
+                    if( eachAttributes.getId() == eachTeam.getId()) {
+                        englandAttributes.add(eachAttributes);
+                    }
+                }
+            }
+
+            //            for (EnglandTeamAttributes eachAttributes : englandAttributes ) System.out.println(eachAttributes);
+
+
+
+        } catch (Sql2oException ex) {
+            logger.error("Failed to initialize EnglandTeamAttributes table", ex);
+            throw new SoccerServiceException("Failed to initialize EnglandTeamAttributes table", ex);
+        }
     }
 
     private boolean checkUpdatePermission(String sourceName, Connection conn) throws SoccerServiceException {
