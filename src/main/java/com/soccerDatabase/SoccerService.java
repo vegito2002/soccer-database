@@ -424,7 +424,9 @@ public class SoccerService {
 
                 System.out.println(tempTeamId);
 
-                for (String eachPlayerName : (ArrayList<String>)eachMembership.getValue()) {
+//                List<String> playersInTeam =
+
+                for (String eachPlayerName : (List<String>)eachMembership.getValue()) {
 
                     System.out.printf("Trying to find %s%n", eachPlayerName);
 
@@ -436,6 +438,7 @@ public class SoccerService {
                         System.out.printf("Player %s is not found%n", eachPlayerName);
                         return;
                     }
+                    System.out.printf("id for player %s is %d%n", eachPlayerName, tempPlayerId);
                 }
             }
         } catch (Sql2oException ex) {
@@ -446,7 +449,7 @@ public class SoccerService {
 
     private int getTeamIdByName(String teamName, List<EnglandTeam> teams) {
         for (EnglandTeam eachTeam : teams ) {
-            if (eachTeam.getTeamName().equals(teamName)) return eachTeam.getId();
+            if (eachTeam.getTeamName().equals(teamName) || eachTeam.getTeamName().contains(teamName)) return eachTeam.getId();
         }
         return -1;
     }
