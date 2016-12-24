@@ -1,0 +1,38 @@
+<!--
+   Code based on a tutorial by Shekhar Gulati of SparkJava at
+   https://blog.openshift.com/developing-single-page-web-applications-using-java-8-spark-mongodb-and-angularjs/
+-->
+
+<h2>All Todos <a class="btn btn-primary pull-right" href="#/create">
+    <i class="icon-plus-sign icon-white"></i> New Todo</a></h2>
+
+<table class="table table-hover">
+    <tr>
+        <th>
+            #
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Created On
+        </th>
+        <th>Done</th>
+    </tr>
+    <tr class="success-{{soccerData.done}}" ng-repeat="soccerData in soccerDatas">
+        <td>{{$index+1}}</td>
+        <td>
+            {{soccerData.title}}
+        </td>
+        <td>
+            {{soccerData.createdOn |date:'medium'}}
+        </td>
+        <td>
+            <input type="checkbox" ng-change="todoStatusChanged(soccerData)" ng-value="soccerData.done" ng-model="soccerData.done">
+        </td>
+        <td>
+            <a href="" ng-click="deleteTodo(soccerData)"><img src="/img/delete.png"></a>
+            <a ng-href="#/edit/{{soccerData.id}}"><img src="/img/edit.png"></a>
+        </td>
+    </tr>
+</table>

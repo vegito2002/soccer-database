@@ -1,0 +1,81 @@
+{
+	"variables": [],
+	"info": {
+		"name": "todo",
+		"_postman_id": "b0f9e85a-985d-672d-dda9-8e2e93a32ac4",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add a todo",
+			"request": {
+				"url": "http://localhost:8080/api/v1/todos",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"title\":\"TODO!!\",\n    \"done\":false,\n    \"createdOn\": \"Sep 1, 2000 1:11:11 PM\" }"
+				},
+				"description": "add a new todo; JSON argument is under the \"body\" tab"
+			},
+			"response": []
+		},
+		{
+			"name": "get a list of all todos",
+			"request": {
+				"url": "http://localhost:8080/api/v1/todos",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "result is a JSON list of all the current todos"
+			},
+			"response": []
+		},
+		{
+			"name": "Get todo 2",
+			"request": {
+				"url": "http://localhost:8080/api/v1/todos/2",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Update Todo 2",
+			"request": {
+				"url": "http://localhost:8080/api/v1/todos/2",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"title\":\"New Todo 2 edited\",\"done\":false}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "delete todo 2",
+			"request": {
+				"url": "http://localhost:8080/api/v1/todos/7",
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
