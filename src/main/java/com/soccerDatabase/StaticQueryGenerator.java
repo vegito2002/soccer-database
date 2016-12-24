@@ -68,4 +68,11 @@ public class StaticQueryGenerator {
             + " birthdayNumber INTEGER, "
             + " PRIMARY KEY(id)); ";
 
+    public final static String SQL_CREATETABLE_ENGLAND_PLAYER_ATTRIBUTES =
+            " CREATE TABLE IF NOT EXISTS EnglandPlayerAttributes" +
+                    " (id INTEGER NOT NULL, "
+                    + " rating INTEGER, "
+                    + " potential INTEGER, "
+                    + " foot TEXT, PRIMARY KEY(id)); ";
+
 }

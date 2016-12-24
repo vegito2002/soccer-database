@@ -15,6 +15,9 @@ public class EnglandPlayerAttributes {
         this.foot = foot;
     }
 
+    public EnglandPlayerAttributes() {
+    }
+
     @Override
     public String toString() {
         return "EnglandPlayerAttributes{" +

@@ -85,6 +85,7 @@ public class SoccerController {
                 soccerService.initializeTeamAttributes();
                 soccerService.initializeTeamMemberShip();
                 soccerService.initializePlayer();
+                soccerService.initializePlayerAttributes();
                 return true;
             } catch  (SoccerService.SoccerServiceException ex) {
                 logger.error("Failed to fetch the list of todos");

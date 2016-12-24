@@ -55,6 +55,7 @@ public class SoccerService {
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_MEMBERSHIP).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER_ATTRIBUTES).executeUpdate();
             conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
@@ -381,29 +382,45 @@ public class SoccerService {
     public void initializePlayerAttributes() throws SoccerServiceException {
         try (Connection conn = db.open()) {
 //            if(!checkUpdatePermission("PlayerAttributes", conn)) return;
-            System.out.println("Starting to initialize table EnglandPlayer");
+            System.out.println("Starting to initialize table EnglandPlayerAttributes");
 
-            String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
-                    " SELECT E1.playerId AS id, P1.player_name AS name, P1.height AS height, P1.weight AS weight, P1.birthday AS birthday, 0 AS birthdayNumber " +
-                    "                    FROM EnglandMembership AS E1, Player AS P1 " +
-                    "                    WHERE E1.playerId=P1.player_api_id;  ";
-            conn.createQuery(sqlUpdateTableEnglandPlayer).executeUpdate();
+            String sqlFetchAllPlayerAttributes = " SELECT id AS counter, "
+                    + " player_api_id AS id, "
+                    + " overall_rating AS rating, "
+                    + " potential, "
+                    + " preferred_foot as foot"
+                    + " FROM Player_Attributes; ";
 
-            String sqlFetchEnglandPlayers = " SELECT * FROM EnglandPlayer; ";
-            List<EnglandPlayer> englandPlayers = conn.createQuery(sqlFetchEnglandPlayers)
-                    .executeAndFetch(EnglandPlayer.class);
+            List<AnyPlayerAttributes> allPlayerAttributes = conn.createQuery(sqlFetchAllPlayerAttributes)
+                    .executeAndFetch(AnyPlayerAttributes.class);
 
-            conn.createQuery( " DELETE FROM EnglandPlayer; ").executeUpdate();
+            List<EnglandPlayerAttributes> englandPlayerAttributes = new ArrayList<>();
 
-            String sqlInsertPlayer = " INSERT INTO EnglandPlayer VALUES " +
-                    " ( :id, :name, :height, :weight, :birthday, :birthdayNumber ); ";
-
-            for(EnglandPlayer eachPlayer : englandPlayers) {
-                eachPlayer.calculateDateNumber();
-                conn.createQuery(sqlInsertPlayer)
-                        .bind(eachPlayer)
-                        .executeUpdate();
+            for (AnyPlayerAttributes eachAttributes : allPlayerAttributes) {
+                System.out.println(eachAttributes);
             }
+
+//            String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
+//                    " SELECT E1.playerId AS id, P1.player_name AS name, P1.height AS height, P1.weight AS weight, P1.birthday AS birthday, 0 AS birthdayNumber " +
+//                    "                    FROM EnglandMembership AS E1, Player AS P1 " +
+//                    "                    WHERE E1.playerId=P1.player_api_id;  ";
+//            conn.createQuery(sqlUpdateTableEnglandPlayer).executeUpdate();
+//
+//            String sqlFetchEnglandPlayers = " SELECT * FROM EnglandPlayer; ";
+//            List<EnglandPlayer> englandPlayers = conn.createQuery(sqlFetchEnglandPlayers)
+//                    .executeAndFetch(EnglandPlayer.class);
+//
+//            conn.createQuery( " DELETE FROM EnglandPlayer; ").executeUpdate();
+//
+//            String sqlInsertPlayer = " INSERT INTO EnglandPlayer VALUES " +
+//                    " ( :id, :name, :height, :weight, :birthday, :birthdayNumber ); ";
+//
+//            for(EnglandPlayer eachPlayer : englandPlayers) {
+//                eachPlayer.calculateDateNumber();
+//                conn.createQuery(sqlInsertPlayer)
+//                        .bind(eachPlayer)
+//                        .executeUpdate();
+//            }
 
 //            System.out.printf("%d tuples put back into table EnglandPlayer with birthdayNumber generated%n", englandPlayers.size());
 
