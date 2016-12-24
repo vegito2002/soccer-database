@@ -59,7 +59,7 @@ public class SoccerService {
             + " teamCode TEXT, "
             + " city TEXT, "
             + " PRIMARY KEY(id));";
-    private final String SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES = " CREATE TABLE IF NOT EXISTS EnglandTeamAttribute "
+    private final String SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES = " CREATE TABLE IF NOT EXISTS EnglandTeamAttributes "
             + " (id INTEGER NOT NULL,  "
             + " buildUpPlaySpeedClass TEXT, "
             + " buildUpPlayDribblingClass TEXT, "
@@ -283,7 +283,6 @@ public class SoccerService {
                     eachTeam.setCity(teamCities.get(eachTeam.getTeamName()));
                 }
             }
-            System.out.println("check");
 
             String sqlInsertEnglandTeam = " INSERT INTO EnglandTeam VALUES ( "
                     + " :id, :teamName, :teamCode, :city); ";
@@ -304,7 +303,7 @@ public class SoccerService {
 
     public void initializeTeamAttributes() throws SoccerServiceException {
         try (Connection conn = db.open()) {
-            if (!checkUpdatePermission("TeamAttribute", conn)) return;
+            if (!checkUpdatePermission("TeamAttributes", conn)) return;
 
             String sqlFetchTeamAttributes = " SELECT team_api_id,  "
                     + " buildUpPlaySpeedClass, "
@@ -346,7 +345,27 @@ public class SoccerService {
             }
 
             //            for (EnglandTeamAttributes eachAttributes : englandAttributes ) System.out.println(eachAttributes);
+            String sqlInsertEnglandTeamAttributes = " INSERT INTO EnglandTeamAttributes VALUES "
+                    + " (:id, "
+                    + " :buildUpPlaySpeedClass, "
+                    + " :buildUpPlayDribblingClass, "
+                    + " :buildUpPlayPassingClass, "
+                    + " :buildUpPlayPositioningClass, "
+                    + " :chanceCreationPassingClass, "
+                    + " :chanceCreationCrossingClass, "
+                    + " :chanceCreationShootingClass, "
+                    + " :chanceCreationPositioningClass, "
+                    + " :defencePressureClass, "
+                    + " :defenceAggressionClass, "
+                    + " :defenceTeamWidthClass, "
+                    + " :defenceDefenderLineClass ); ";
+            for (EnglandTeamAttributes eachAttributes : englandAttributes ) {
+                conn.createQuery(sqlInsertEnglandTeamAttributes)
+                        .bind(eachAttributes)
+                        .executeUpdate();
+            }
 
+            updateLog("TeamAttributes", conn);
 
 
         } catch (Sql2oException ex) {
