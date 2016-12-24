@@ -343,6 +343,9 @@ public class SoccerService {
 
     public void initializePlayer() throws SoccerServiceException {
         try (Connection conn = db.open()) {
+            if(!checkUpdatePermission("Player", conn)) return;
+            System.out.println("Starting to initialize table EnglandPlayer");
+
             String sqlUpdateTableEnglandPlayer = " INSERT OR REPLACE INTO EnglandPlayer" +
                     " SELECT E1.playerId AS id, P1.player_name AS name, P1.height AS height, P1.weight AS weight, P1.birthday AS birthday, 0 AS birthdayNumber " +
                     "                    FROM EnglandMembership AS E1, Player AS P1 " +
@@ -353,11 +356,21 @@ public class SoccerService {
             List<EnglandPlayer> englandPlayers = conn.createQuery(sqlFetchEnglandPlayers)
                     .executeAndFetch(EnglandPlayer.class);
 
+            conn.createQuery( " DELETE FROM EnglandPlayer; ").executeUpdate();
+
+            String sqlInsertPlayer = " INSERT INTO EnglandPlayer VALUES " +
+                    " ( :id, :name, :height, :weight, :birthday, :birthdayNumber ); ";
+
             for(EnglandPlayer eachPlayer : englandPlayers) {
                 eachPlayer.calculateDateNumber();
+                conn.createQuery(sqlInsertPlayer)
+                        .bind(eachPlayer)
+                        .executeUpdate();
             }
 
+            System.out.printf("%d tuples put back into table EnglandPlayer with birthdayNumber generated%n", englandPlayers.size());
 
+            updateLog("Player", conn);
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandPlayer table", ex);
