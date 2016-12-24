@@ -24,11 +24,15 @@
           <file leaf-file-name="SoccerService.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/main/java/com/soccerDatabase/SoccerService.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="564">
-                  <caret line="316" column="38" lean-forward="false" selection-start-line="316" selection-start-column="38" selection-end-line="316" selection-end-column="38" />
+                <state relative-caret-position="914">
+                  <caret line="598" column="52" lean-forward="true" selection-start-line="598" selection-start-column="52" selection-end-line="598" selection-end-column="52" />
                   <folding>
-                    <element signature="e#9667#9668#0" expanded="true" />
-                    <element signature="e#9712#9713#0" expanded="true" />
+                    <element signature="e#0#24633#0" expanded="true" />
+                    <element signature="imports" expanded="true" />
+                    <element signature="e#9692#9693#0" expanded="true" />
+                    <element signature="e#9737#9738#0" expanded="true" />
+                    <element signature="e#11896#11909#0" expanded="true" />
+                    <element signature="e#20009#20030#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -503,8 +507,8 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1980198" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="21" y="440" width="1878" height="200" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1980198" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="21" y="440" width="1878" height="200" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32970297" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -523,6 +527,24 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -562,11 +584,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/soccerDatabase/SoccerService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="564">
-          <caret line="316" column="38" lean-forward="false" selection-start-line="316" selection-start-column="38" selection-end-line="316" selection-end-column="38" />
+        <state relative-caret-position="914">
+          <caret line="598" column="52" lean-forward="true" selection-start-line="598" selection-start-column="52" selection-end-line="598" selection-end-column="52" />
           <folding>
-            <element signature="e#9667#9668#0" expanded="true" />
-            <element signature="e#9712#9713#0" expanded="true" />
+            <element signature="e#0#24633#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#9692#9693#0" expanded="true" />
+            <element signature="e#9737#9738#0" expanded="true" />
+            <element signature="e#11896#11909#0" expanded="true" />
+            <element signature="e#20009#20030#0" expanded="true" />
           </folding>
         </state>
       </provider>

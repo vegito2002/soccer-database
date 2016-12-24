@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Arrays;
 
 public class SoccerService {
 
@@ -452,6 +453,152 @@ public class SoccerService {
         result.put("Leicester City", "Leicester");
         result.put("Bournemouth", "Bournemouth");
         result.put("Watford", "Watford");
+
+        return result;
+    }
+
+    private Map<String, List<String>> manualSetPlayerMembership() {
+        Map<String, List<String>> result = new HashMap<String,List<String>>();
+
+        result.put("Manchester United", Arrays.asList("David de Gea",
+                "Sergio Romero",
+                "Sam Johnstone",
+                "Eric Bailly",
+                "Daley Blind",
+                "Luke Shaw",
+                "Chris Smalling",
+                "Marcos Rojo",
+                "Matteo Darmian",
+                "Phil Jones",
+                "Antonio Valencia",
+                "Paul Pogba",
+                "Henrikh Mkhitaryan",
+                "Juan Mata",
+                "Ander Herrera",
+                "Morgan Schneiderlin",
+                "Marouane Fellaini",
+                "Ashley Young",
+                "Jesse Lingard",
+                "Bastian Scheweinsteiger",
+                "Michael Carrick",
+                "Timothy Fosu-Mensah",
+                "Anthony Martial",
+                "Wayne Rooney",
+                "Memphis Depay",
+                "Zlatan Ibrahimovic",
+                "Marcus Dashford"));
+
+        result.put("Burnley", Arrays.asList("Tom Heaton",
+                "Nick Pope",
+                "Paul Robinson",
+                "Micheal Keane",
+                "James Tarkowski",
+                "Kevin Long",
+                "Ben Mee",
+                "Stephen Ward",
+                "Jon Flanagan",
+                "Matthew Lowton",
+                "Tendayi Darikwa",
+                "Steven Defour",
+                "Jeff Hendrick",
+                "Dean Marney",
+                "George Boyd",
+                "Scott Arfield",
+                "Micheal Kightly",
+                "Johann Berg Gudmundsson",
+                "Andre Gray",
+                "Patrick Bamford",
+                "Sam Vokes",
+                "Ashley Barnes"));
+
+        result.put("Arsenal", Arrays.asList("Petr Cech",
+                "David Ospina",
+                "Emiliano Martinez",
+                "Matt Macey",
+                "Shkodran Mustafi",
+                "Laurent Koscielny",
+                "Gabriel Paulista",
+                "Per Mertesacker",
+                "Rob Holding",
+                "Nacho Monreal",
+                "Kieran Gibbs",
+                "Hector Bellerin",
+                "Carl Jenkinson",
+                "Mathieu Debuchy",
+                "Francis Coquelin",
+                "Mohamed Elneny",
+                "Aaron Ramsey",
+                "Granit Xhaka",
+                "Santi Cazorla",
+                "Mesut Oezil",
+                "Alex Iwobi",
+                "Alex Oxlade-Chamberlain",
+                "Alexis Sanchez",
+                "Theo Walcott",
+                "Olivier Giroud",
+                "Lucas Perez",
+                "Danny Welbeck",
+                "Yaya Sanogo",
+                "Chuba Akpom"));
+
+        result.put("Leicester City", Arrays.asList("Kasper Schmeichel",
+                "Ron-Robert Zieler",
+                "Ben Hamer",
+                "Robert Huth",
+                "Wes Morgan",
+                "Yohan Benalouane",
+                "Marcin Wasilewski",
+                "Jeffrey Schlupp",
+                "Christian Fuchs",
+                "Ben Chilwell",
+                "Danny Simpson",
+                "Luis Hernandez",
+                "Nampalys Mendy",
+                "Daniel Amartey",
+                "Danny Drinkwater",
+                "Andy King",
+                "Matty James",
+                "Marc Albrighton",
+                "Bartosz Kapustka",
+                "Demarai Gray",
+                "Riyad Mahrez",
+                "Islam Slimani",
+                "Jamie Vardy",
+                "Ahmed Musa",
+                "Shinji Okazaki",
+                "Leonardo Ulloa"));
+
+        result.put("Chelsea", Arrays.asList("Thibaut Courtois",
+                "Asmir Begovic",
+                "Eduardo",
+                "David Luiz",
+                "Kurt Zouma",
+                "Gary Cahill",
+                "John Terry",
+                "Cesar Azpilicueta",
+                "Marcos Alonso",
+                "Kenedy",
+                "Branislav Ivanovic",
+                "Todd Kane",
+                "Ola Aina",
+                "Nemanja Matic",
+                "N'Golo Kante",
+                "John Mikel Obi",
+                "Nathaniel Chalobah",
+                "Cesc Fabregas",
+                "Marco van Ginkel",
+                "Ruben Loftus-Cheek",
+                "Oscar",
+                "Eden Hazard",
+                "Willian",
+                "Pedro",
+                "Victor Moses",
+                "Diego Costa",
+                "Michy Batshuayi"));
+
+        result.put("Manchester City", Arrays.asList());
+
+
 
         return result;
     }
