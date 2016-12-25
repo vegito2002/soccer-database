@@ -39,7 +39,9 @@ public class StaticQueryGenerator {
             + " teamName TEXT, "
             + " teamCode TEXT, "
             + " city TEXT, "
-            + " PRIMARY KEY(id));";
+            + " PRIMARY KEY(id), " +
+            " FOREIGN KEY(teamName) REFERENCES MatchRecords(homeTeam), " +
+            "FOREIGN KEY(teamName) REFERENCES MatchRecords(awayTeam));";
     public final static String SQL_CREATETABLE_ENGLAND_TEAM_ATTRIBUTES = " CREATE TABLE IF NOT EXISTS EnglandTeamAttributes "
             + " (id INTEGER NOT NULL,  "
             + " buildUpPlaySpeedClass TEXT, "
@@ -54,11 +56,13 @@ public class StaticQueryGenerator {
             + " defenceAggressionClass TEXT, "
             + " defenceTeamWidthClass TEXT, "
             + " defenceDefenderLineClass TEXT, "
-            + " PRIMARY KEY(id)); ";
+            + " PRIMARY KEY(id), " +
+            " FOREIGN KEY(id) REFERENCES EnglandTeam(id)); ";
     public final static String SQL_CREATETABLE_ENGLAND_MEMBERSHIP = " CREATE TABLE IF NOT EXISTS EnglandMembership "
             + " (teamId INTEGER NOT NULL, "
             + " playerId INTEGER NOT NULL, "
-            + " PRIMARY KEY(teamId, playerId)); ";
+            + " PRIMARY KEY(teamId, playerId), " +
+            " FOREIGN KEY(teamId) REFERENCES EnglandTeam(id)); ";
     public final static String SQL_CREATETABLE_ENGLAND_PLAYER = " CREATE TABLE IF NOT EXISTS EnglandPlayer "
             + " (id INTEGER NOT NULL, "
             + " name TEXT, "
@@ -66,14 +70,16 @@ public class StaticQueryGenerator {
             + " weight REAL, "
             + " birthday TEXT, "
             + " birthdayNumber INTEGER, "
-            + " PRIMARY KEY(id)); ";
+            + " PRIMARY KEY(id), " +
+            " FOREIGN KEY(id) REFERENCES EnglandMembership(playerId)); ";
 
     public final static String SQL_CREATETABLE_ENGLAND_PLAYER_ATTRIBUTES =
             " CREATE TABLE IF NOT EXISTS EnglandPlayerAttributes" +
                     " (id INTEGER NOT NULL, "
                     + " rating INTEGER, "
                     + " potential INTEGER, "
-                    + " foot TEXT, PRIMARY KEY(id)); ";
+                    + " foot TEXT, PRIMARY KEY(id), " +
+                    " FOREIGN KEY(id) REFERENCES EnglandPlayer(id)); ";
 
     public final static String SQL_CREATETABLE_ENGLAND_REFEREE =
             " CREATE TABLE IF NOT EXISTS EnglandReferee " +
@@ -90,6 +96,7 @@ public class StaticQueryGenerator {
             + " birthday TEXT, "
             + " birthCity TEXT, "
             + " birthdayNumber INTEGER, "
-            + " PRIMARY KEY(name)); ";
+            + " PRIMARY KEY(name), " +
+            "FOREIGN KEY(teamId) REFERENCES EnglandTeam(id)); ";
 
 }
