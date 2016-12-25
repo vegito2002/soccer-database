@@ -26,7 +26,9 @@ public class SoccerController {
     }
 
     private void setupEndpoints() {
-
+        /**
+         * Initialize the database.
+         */
         get(API_CONTEXT + "/initialize", "application/json", (request, response)-> {
             try {
                 soccerService.readCSV();
@@ -45,6 +47,9 @@ public class SoccerController {
             return Collections.EMPTY_MAP;
         }, new JsonTransformer());
 
+        /**
+         * Fetch an EnglandTeam by the team id
+         */
         get(API_CONTEXT + "/teambyid", "application/json", (request, response) -> {
             try {
                 return soccerService.findTeamById(request.queryParams("id"));
@@ -55,6 +60,9 @@ public class SoccerController {
             }
         }, new JsonTransformer());
 
+        /**
+         * Fetch an EnglandTeam by the team code
+         */
         get(API_CONTEXT + "/teambycode", "application/json", (request, response) -> {
             try {
                 return soccerService.findTeamByCode(request.queryParams("code"));
@@ -65,6 +73,9 @@ public class SoccerController {
             }
         }, new JsonTransformer());
 
+        /**
+         * Fetch an EnglandTeam by the name, complete or incomplete, case insensitive
+         */
         get(API_CONTEXT + "/teambyname", "application/json", (request, response) -> {
             try {
                 return soccerService.findTeamByName(request.queryParams("name"));

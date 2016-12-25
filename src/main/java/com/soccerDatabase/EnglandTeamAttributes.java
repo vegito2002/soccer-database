@@ -3,6 +3,10 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/23/16.
  */
+
+/**
+ * Class for holding data in table EnglandTeamAttributes
+ */
 public class EnglandTeamAttributes {
     private int id;
     private String buildUpPlaySpeedClass, buildUpPlayDribblingClass, buildUpPlayPassingClass, buildUpPlayPositioningClass;

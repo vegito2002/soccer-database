@@ -3,6 +3,10 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * Class for holding data from table EnglandManager
+ */
 public class EnglandManager {
     private String name;
     private int teamId;

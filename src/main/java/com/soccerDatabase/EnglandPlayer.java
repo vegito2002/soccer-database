@@ -83,6 +83,9 @@ public class EnglandPlayer {
         this.birthdayNumber = birthdayNumber;
     }
 
+    /**
+     * Simple method to calculate the birthday in Integer format
+     */
     public void calculateDateNumber() {
         String[] dateWords = getBirthday().split(" ");
         LocalDate dateLocal = LocalDate.parse(dateWords[0], DateTimeFormatter.ISO_LOCAL_DATE);

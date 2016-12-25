@@ -5,6 +5,10 @@ import java.util.List;
 /**
  * Created by vegito2002 on 12/23/16.
  */
+
+/**
+ * Class for holding data in table EnglandTeam
+ */
 public class EnglandTeam {
     private int id;
     private String teamName, teamCode;

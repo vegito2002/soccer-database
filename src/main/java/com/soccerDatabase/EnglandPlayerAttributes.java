@@ -3,6 +3,10 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * Class for holding data in table EnglandPlayerAttributes
+ */
 public class EnglandPlayerAttributes {
     private int id;
     private int rating, potential;

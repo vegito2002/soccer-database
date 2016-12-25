@@ -9,7 +9,9 @@ import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
+/**
+ * A class simply to read data from a CSV file and return it as a List to be further processed
+ */
 public class CSVReader {
     private static String CVS_FILE_NAME = "E0.CSV";
     private static String CVS_SEPARATER = ",";

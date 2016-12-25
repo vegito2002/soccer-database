@@ -8,6 +8,11 @@ import java.util.Map;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * Class for holding and generatoring data that are manually collected by me. Each method returns a map that is easy
+ * to further process
+ */
 public class ManualDataGenerator {
     public Map<String, List<String>> manualSetPlayerMembership() {
         Map<String, List<String>> result = new HashMap<String,List<String>>();

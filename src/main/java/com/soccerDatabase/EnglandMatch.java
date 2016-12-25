@@ -5,6 +5,10 @@ import java.util.List;
 /**
  * Created by vegito2002 on 12/22/16.
  */
+
+/**
+ * Class corresponds to the data in table EnglandTeam
+ */
 public class EnglandMatch {
     private String dateString;
     private int dateNumber;
@@ -24,7 +28,11 @@ public class EnglandMatch {
     private int htag, hthg;
     private int homeShot, awayShot, hst, ast, hf, af, hc, ac, hy, ay, hr, ar;
 
-
+    /**
+     * Since the match record's home and away team names can be sometimes in complete, this method can fixing it by
+     * finding the complete version in the 'teams' list and substituting them for the incomplete version
+     * @param teams The list that contains all the complete team names
+     */
     public void expandTeamNames(List<EnglandTeam> teams) {
         System.out.printf("Expanding team names for team %s and team %s%n", getHomeTeam(), getAwayTeam());
 
@@ -34,6 +42,12 @@ public class EnglandMatch {
         System.out.printf("Expanded team names are %s and %s%n", getHomeTeam(), getAwayTeam());
     }
 
+    /**
+     * Search in the list of 'teams' for a team name that is a more complete version of 'teamName'
+     * @param teamName The incomplete team name
+     * @param teams The list of teams to be searched for a complete team name
+     * @return THe complete team name found
+     */
     private String findFullTeamName(String teamName, List<EnglandTeam> teams) {
         String[] nameWords = teamName.split(" ");
 

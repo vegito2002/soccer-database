@@ -3,6 +3,11 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * A class to hold an additional column than EnglandPlayerAttributes, which is the counter id, so that I can find the latest
+ * Player_Attributes tuple for a certain playerId
+ */
 public class AnyPlayerAttributes extends EnglandPlayerAttributes {
     private int counter;
 

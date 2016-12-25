@@ -3,6 +3,10 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * Class for holding data of table EnglandMembershp
+ */
 public class EnglandMembership {
     private int teamId;
     private int playerId;

@@ -3,6 +3,10 @@ package com.soccerDatabase;
 /**
  * Created by vegito2002 on 12/24/16.
  */
+
+/**
+ * A class to generate static query strings for creating tables
+ */
 public class StaticQueryGenerator {
 
     public final static String SQL_CREATETABLE_MATCHRECORDS ="CREATE TABLE IF NOT EXISTS MatchRecords ( "
