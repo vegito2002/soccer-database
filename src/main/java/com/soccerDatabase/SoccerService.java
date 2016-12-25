@@ -456,6 +456,24 @@ public class SoccerService {
         }
     }
 
+    public void initializeManager() throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            ManualDataGenerator generator = new ManualDataGenerator();
+            Map<Integer, List<String>> managerProfiles = generator.manualSetManager();
+
+
+
+            for (Map.Entry eachManagerProfile : managerProfiles.entrySet() ) {
+                String[] managerProfileEntries = (String[]) ((ArrayList<String>)eachManagerProfile.getValue()).toArray();
+
+            }
+
+        } catch (Sql2oException ex) {
+            logger.error("Failed to initialize EnglandManager table", ex);
+            throw new SoccerServiceException("Failed to initialize Manager table", ex);
+        }
+    }
+
     private int getTeamIdByName(String teamName, List<EnglandTeam> teams) {
         for (EnglandTeam eachTeam : teams ) {
             if (eachTeam.getTeamName().equals(teamName)) return eachTeam.getId();
