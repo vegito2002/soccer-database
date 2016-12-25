@@ -26,57 +26,6 @@ public class SoccerController {
     }
 
     private void setupEndpoints() {
-        post(API_CONTEXT + "/todos", "application/json", (request, response) -> {
-            try {
-                soccerService.createNewTodo(request.body());
-                response.status(201);
-            } catch (SoccerService.SoccerServiceException ex) {
-                logger.error("Failed to create new entry");
-                response.status(500);
-            }
-            return Collections.EMPTY_MAP;
-        }, new JsonTransformer());
-
-        get(API_CONTEXT + "/todos/:id", "application/json", (request, response) -> {
-            try {
-                return soccerService.find(request.params(":id"));
-            } catch (SoccerService.SoccerServiceException ex) {
-                logger.error(String.format("Failed to find object with id: %s", request.params(":id")));
-                response.status(500);
-                return Collections.EMPTY_MAP;
-            }
-        }, new JsonTransformer());
-
-        get(API_CONTEXT + "/todos", "application/json", (request, response)-> {
-            try {
-                return soccerService.findAll() ;
-            } catch  (SoccerService.SoccerServiceException ex) {
-                logger.error("Failed to fetch the list of todos");
-                response.status(500);
-                return Collections.EMPTY_MAP;
-            }
-        }, new JsonTransformer());
-
-        put(API_CONTEXT + "/todos/:id", "application/json", (request, response) -> {
-            try {
-                return soccerService.update(request.params(":id"), request.body());
-            } catch (SoccerService.SoccerServiceException ex) {
-                logger.error(String.format("Failed to update todo with id: %s", request.params(":id")));
-                response.status(500);
-                return Collections.EMPTY_MAP;
-            }
-        }, new JsonTransformer());
-
-        delete(API_CONTEXT + "/todos/:id", "application/json", (request, response) -> {
-            try {
-                soccerService.delete(request.params(":id"));
-                response.status(200);
-            } catch (SoccerService.SoccerServiceException ex) {
-                logger.error(String.format("Failed to delete todo with id: %s", request.params(":id")));
-                response.status(500);
-            }
-            return Collections.EMPTY_MAP;
-        }, new JsonTransformer());
 
         get(API_CONTEXT + "/initialize", "application/json", (request, response)-> {
             try {
@@ -87,11 +36,12 @@ public class SoccerController {
                 soccerService.initializePlayer();
                 soccerService.initializePlayerAttributes();
                 soccerService.initializeReferee();
-                return "Initialization Complete";
+                response.status(201);
             } catch  (SoccerService.SoccerServiceException ex) {
                 logger.error("Failed to fetch the list of todos");
                 response.status(500);
-                return Collections.EMPTY_MAP;
             }
-        }, new JsonTransformer());    }
+            return Collections.EMPTY_MAP;
+        }, new JsonTransformer());
+    }
 }

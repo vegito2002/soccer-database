@@ -39,10 +39,6 @@ public class SoccerService {
     public SoccerService(DataSource dataSource) throws SoccerServiceException {
         db = new Sql2o(dataSource);
 
-        //        try (Connection conn = db.open()) {
-        //            String sql = "CREATE TABLE IF NOT "
-        //        }
-
         //Create the schema for the database if necessary. This allows this
         //program to mostly self-contained. But this is not always what you want;
         //sometimes you want to create the schema externally via a script.
@@ -57,6 +53,7 @@ public class SoccerService {
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER_ATTRIBUTES).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_REFEREE).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_MANAGER).executeUpdate();
             conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
@@ -65,115 +62,6 @@ public class SoccerService {
             throw new SoccerServiceException("Failed to create schema at startup", ex);
         }
     }
-
-    /**
-     * Fetch all todo entries in the list
-     *
-     * @return List of all SoccerData entries
-     */
-    public List<SoccerData> findAll() throws SoccerServiceException {
-        String sql = "SELECT * FROM item";
-        try (Connection conn = db.open()) {
-            List<SoccerData> soccerDatas = conn.createQuery(sql)
-                    .addColumnMapping("item_id", "id")
-                    .addColumnMapping("created_on", "createdOn")
-                    .executeAndFetch(SoccerData.class);
-            return soccerDatas;
-        } catch (Sql2oException ex) {
-            logger.error("SoccerService.findAll: Failed to query database", ex);
-            throw new SoccerServiceException("SoccerService.findAll: Failed to query database", ex);
-        }
-    }
-
-    /**
-     * Create a new SoccerData entry.
-     */
-    public void createNewTodo(String body) throws SoccerServiceException {
-        SoccerData soccerData = new Gson().fromJson(body, SoccerData.class);
-
-        String sql = "INSERT INTO item (title, done, created_on) " +
-                "             VALUES (:title, :done, :createdOn)";
-
-        try (Connection conn = db.open()) {
-            conn.createQuery(sql)
-                    .bind(soccerData)
-                    .executeUpdate();
-        } catch (Sql2oException ex) {
-            logger.error("SoccerService.createNewTodo: Failed to create new entry", ex);
-            throw new SoccerServiceException("SoccerService.createNewTodo: Failed to create new entry", ex);
-        }
-    }
-
-    /**
-     * Find a todo entry given an Id.
-     *
-     * @param id The id for the SoccerData entry
-     * @return The SoccerData corresponding to the id if one is found, otherwise null
-     */
-    public SoccerData find(String id) throws SoccerServiceException {
-        String sql = "SELECT * FROM item WHERE item_id = :itemId ";
-
-        try (Connection conn = db.open()) {
-            return conn.createQuery(sql)
-                    .addParameter("itemId", Integer.parseInt(id))
-                    .addColumnMapping("item_id", "id")
-                    .addColumnMapping("created_on", "createdOn")
-                    .executeAndFetchFirst(SoccerData.class);
-        } catch (Sql2oException ex) {
-            logger.error(String.format("SoccerService.find: Failed to query database for id: %s", id), ex);
-            throw new SoccerServiceException(String.format("SoccerService.find: Failed to query database for id: %s", id), ex);
-        }
-    }
-
-    /**
-     * Update the specified SoccerData entry with new information
-     */
-    public SoccerData update(String todoId, String body) throws SoccerServiceException {
-        SoccerData soccerData = new Gson().fromJson(body, SoccerData.class);
-
-        String sql = "UPDATE item SET title = :title, done = :done, created_on = :createdOn WHERE item_id = :itemId ";
-        try (Connection conn = db.open()) {
-            //Update the item
-            conn.createQuery(sql)
-                    .bind(soccerData)  // one-liner to map all SoccerData object fields to query parameters :title etc
-                    .addParameter("itemId", Integer.parseInt(todoId))
-                    .executeUpdate();
-
-            //Verify that we did indeed update something
-            if (getChangedRows(conn) != 1) {
-                logger.error(String.format("SoccerService.update: Update operation did not update rows. Incorrect id(?): %s", todoId));
-                throw new SoccerServiceException(String.format("SoccerService.update: Update operation did not update rows. Incorrect id (?): %s", todoId), null);
-            }
-        } catch (Sql2oException ex) {
-            logger.error(String.format("SoccerService.update: Failed to update database for id: %s", todoId), ex);
-            throw new SoccerServiceException(String.format("SoccerService.update: Failed to update database for id: %s", todoId), ex);
-        }
-
-        return find(todoId);
-    }
-
-    /**
-     * Delete the entry with the specified id
-     */
-    public void delete(String todoId) throws SoccerServiceException {
-        String sql = "DELETE FROM item WHERE item_id = :itemId";
-        try (Connection conn = db.open()) {
-            //Delete the item
-            conn.createQuery(sql)
-                    .addParameter("itemId", Integer.parseInt(todoId))
-                    .executeUpdate();
-
-            //Verify that we did indeed change something
-            if (getChangedRows(conn) != 1) {
-                logger.error(String.format("SoccerService.delete: Delete operation did not delete rows. Incorrect id(?): %s", todoId));
-                throw new SoccerServiceException(String.format("SoccerService.delete: Delete operation did not delete rows. Incorrect id(?): %s", todoId), null);
-            }
-        } catch (Sql2oException ex) {
-            logger.error(String.format("SoccerService.update: Failed to delete id: %s", todoId), ex);
-            throw new SoccerServiceException(String.format("SoccerService.update: Failed to delete id: %s", todoId), ex);
-        }
-    }
-
 
     public static class SoccerServiceException extends Exception {
         public SoccerServiceException(String message, Throwable cause) {

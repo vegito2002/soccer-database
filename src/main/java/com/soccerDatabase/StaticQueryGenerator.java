@@ -84,6 +84,12 @@ public class StaticQueryGenerator {
                     + " birthdayNumber INTEGER, "
                     + " PRIMARY KEY(name)); ";
 
-
+    public final static String SQL_CREATETABLE_ENGLAND_MANAGER = " CREATE TABLE IF NOT EXISTS EnglandManager "
+            + " (name TEXT NOT NULL, "
+            + " teamId INTEGER, "
+            + " birthday TEXT, "
+            + " birthCity TEXT, "
+            + " birthdayNumber INTEGER, "
+            + " PRIMARY KEY(name)); ";
 
 }
