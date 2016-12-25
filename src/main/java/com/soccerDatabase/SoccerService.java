@@ -63,21 +63,20 @@ public class SoccerService {
         }
     }
 
-    public static class SoccerServiceException extends Exception {
-        public SoccerServiceException(String message, Throwable cause) {
-            super(message, cause);
+    public EnglandTeam findTeam(String id) throws SoccerServiceException {
+        int idInt = Integer.parseInt(id);
+        try (Connection conn = db.open()) {
+            String sqlFetchTeamById = " SELECT * FROM EnglandTeam WHERE id= :idParam ; ";
+
+            return conn.createQuery(sqlFetchTeamById)
+                    .addParameter("idParam", idInt)
+                    .executeAndFetchFirst(EnglandTeam.class);
+
+        } catch (Sql2oException ex) {
+            logger.error(String.format("SoccerService.findTeam: Failed to query database for id: %s", id), ex);
+            throw new SoccerServiceException(String.format("SoccerService.findTeam: Failed to query database for id: %s", id), ex);
         }
     }
-
-    /**
-     * This Sqlite specific method returns the number of rows changed by the most recent
-     * INSERT, UPDATE, DELETE operation. Note that you MUST use the same connection to get
-     * this information
-     */
-    private int getChangedRows(Connection conn) throws Sql2oException {
-        return conn.createQuery("SELECT changes()").executeScalar(Integer.class);
-    }
-
 
     public void readCSV() throws SoccerServiceException {
         try (Connection conn = db.open()) {
@@ -568,6 +567,20 @@ public class SoccerService {
 
 
 
+    public static class SoccerServiceException extends Exception {
+        public SoccerServiceException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    /**
+     * This Sqlite specific method returns the number of rows changed by the most recent
+     * INSERT, UPDATE, DELETE operation. Note that you MUST use the same connection to get
+     * this information
+     */
+    private int getChangedRows(Connection conn) throws Sql2oException {
+        return conn.createQuery("SELECT changes()").executeScalar(Integer.class);
+    }
 
 }
 

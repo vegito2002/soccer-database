@@ -39,10 +39,21 @@ public class SoccerController {
                 soccerService.initializeManager();
                 response.status(201);
             } catch  (SoccerService.SoccerServiceException ex) {
-                logger.error("Failed to fetch the list of todos");
+                logger.error("Failed to initialize database");
                 response.status(500);
             }
             return Collections.EMPTY_MAP;
         }, new JsonTransformer());
+
+        get(API_CONTEXT + "/team", "application/json", (request, response) -> {
+            try {
+                return soccerService.findTeam(request.queryParams("id"));
+            } catch (SoccerService.SoccerServiceException ex) {
+                logger.error(String.format("Failed to find object with id: %s", request.params(":id")));
+                response.status(500);
+                return Collections.EMPTY_MAP;
+            }
+        }, new JsonTransformer());
+
     }
 }
