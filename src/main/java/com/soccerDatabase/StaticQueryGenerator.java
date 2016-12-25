@@ -84,4 +84,6 @@ public class StaticQueryGenerator {
                     + " birthdayNumber INTEGER, "
                     + " PRIMARY KEY(name)); ";
 
+
+
 }

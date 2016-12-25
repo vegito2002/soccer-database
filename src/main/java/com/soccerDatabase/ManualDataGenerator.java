@@ -596,4 +596,123 @@ public class ManualDataGenerator {
 
         return result;
     }
+
+    public Map<Integer, List<String>> manualSetManager() {
+        Map<Integer, List<String>> result = new HashMap<>();
+
+        result.put(8191, Arrays.asList(
+                "Sean Dyche",
+                "1971-06-28",
+                "Kettering"));
+
+        result.put(8197, Arrays.asList(
+                "Claudio Ranieri",
+                "1951-10-20",
+                "Rome"));
+
+        result.put(8455, Arrays.asList(
+                "Antonio Conte",
+                "1969-07-31",
+                "Lecce"));
+
+        result.put(8456, Arrays.asList(
+                "Pep Guardiola",
+                "1971-01-18",
+                "Santpedor"));
+
+        result.put(8466, Arrays.asList(
+                "Claude Puel",
+                "1961-09-02",
+                "Castres"));
+
+        result.put(8472, Arrays.asList(
+                "David Moyes",
+                "1963-04-25",
+                "Bearsden"));
+
+        result.put(8549, Arrays.asList(
+                "Aitor Karanka",
+                "1973-09-18",
+                "Vitoria-Gasteiz"));
+
+        result.put(8586, Arrays.asList(
+                "Mauricio Pochettino",
+                "1972-03-02",
+                "Murphy"));
+
+        result.put(8650, Arrays.asList(
+                "Jurgen Klopp",
+                "1967-06-16",
+                "Stuttgart"));
+
+        result.put(8654, Arrays.asList(
+                "Slaven Bilic",
+                "1968-09-11",
+                "Split"));
+
+        result.put(8659, Arrays.asList(
+                "Tony Pulis",
+                "1958-01-16",
+                "Pillgwenlly"));
+
+        result.put(8667, Arrays.asList(
+                "Mike Phelan",
+                "1962-09-24",
+                "Nelson"));
+
+        result.put(8668, Arrays.asList(
+                "Ronald Koeman",
+                "1963-03-21",
+                "Zaandam"));
+
+        result.put(8678, Arrays.asList(
+                "Eddie Howe",
+                "1977-11-29",
+                "Amersham"));
+
+        result.put(9817, Arrays.asList("Walter Mazzarri",
+                "1961-10-01",
+                "San Vincenzo"));
+
+        result.put(9825, Arrays.asList("Arsene Wenger",
+                "1949-10-22",
+                "Strasbourg"));
+
+        result.put(9826, Arrays.asList("Alan Pardew",
+                "1961-07-18",
+                "London"));
+
+        result.put(10003, Arrays.asList("Bob Bradley",
+                "1958-03-03",
+                "Montclair"));
+
+        result.put(10194, Arrays.asList("Mark Hughes",
+                "1963-11-01",
+                "Ruabon"));
+
+        result.put(10260, Arrays.asList("Jose Mourinho",
+                "1963-01-26",
+                "Setubal"));
+
+        return result;
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
