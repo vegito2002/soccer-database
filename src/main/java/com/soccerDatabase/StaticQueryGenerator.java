@@ -75,6 +75,13 @@ public class StaticQueryGenerator {
                     + " potential INTEGER, "
                     + " foot TEXT, PRIMARY KEY(id)); ";
 
-    pulic final
+    public final static String SQL_CREATETABLE_ENGLAND_REFEREE =
+            " CREATE TABLE IF NOT EXISTS EnglandReferee " +
+                    " (name TEXT NOT NULL, "
+                    + " fullName TEXT, "
+                    + " birthday TEXT, "
+                    + " birthCity TEXT, "
+                    + " birthdayNumber INTEGER, "
+                    + " PRIMARY KEY(name)); ";
 
 }

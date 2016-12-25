@@ -10,5 +10,11 @@ public class EnglandReferee {
     private String birthCity;
     private int birthdayNumber;
 
-
+    public EnglandReferee(String name, String fullName, String birthday, String birthCity, int birthdayNumber) {
+        this.name = name;
+        this.fullName = fullName;
+        this.birthday = birthday;
+        this.birthCity = birthCity;
+        this.birthdayNumber = birthdayNumber;
+    }
 }
