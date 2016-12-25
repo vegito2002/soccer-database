@@ -514,13 +514,10 @@ public class SoccerService {
             ManualDataGenerator generator = new ManualDataGenerator();
             Map<String, List<String>> referees = generator.manualSetReferee();
 
-            System.out.println("map fetched");
-
             List<EnglandReferee> englandReferees = new ArrayList<>();
 
             for (Map.Entry eachReferee : referees.entrySet() ) {
 
-                System.out.println((String) eachReferee.getKey());
 
                 List<String> eachRefereeProfile = (List<String>) eachReferee.getValue();
                 String[] eachRefereeProfileEntries = (String[]) eachRefereeProfile.toArray();
@@ -532,9 +529,21 @@ public class SoccerService {
                         eachRefereeProfileEntries[3],
                         dateNumber));
             }
+
+            String sqlInsertEnglandReferee = " INSERT INTO EnglandReferee VALUES "
+                    + " ( :name, "
+                    + " :fullName, "
+                    + " :birthday, "
+                    + " :birthCity, "
+                    + " :birthdayNumber); ";
+
             for (EnglandReferee eachReferee : englandReferees ) {
-                System.out.println(eachReferee);
+                conn.createQuery(sqlInsertEnglandReferee)
+                        .bind(eachReferee)
+                        .executeUpdate();
             }
+
+            System.out.printf("%d tuples put back into table EnglandReferee", englandReferees.size());
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandReferee table", ex);
