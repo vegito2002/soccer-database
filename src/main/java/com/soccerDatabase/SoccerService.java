@@ -63,7 +63,7 @@ public class SoccerService {
         }
     }
 
-    public EnglandTeam findTeam(String id) throws SoccerServiceException {
+    public EnglandTeam findTeamById(String id) throws SoccerServiceException {
         int idInt = Integer.parseInt(id);
         try (Connection conn = db.open()) {
             String sqlFetchTeamById = " SELECT * FROM EnglandTeam WHERE id= :idParam ; ";
@@ -73,10 +73,26 @@ public class SoccerService {
                     .executeAndFetchFirst(EnglandTeam.class);
 
         } catch (Sql2oException ex) {
-            logger.error(String.format("SoccerService.findTeam: Failed to query database for id: %s", id), ex);
-            throw new SoccerServiceException(String.format("SoccerService.findTeam: Failed to query database for id: %s", id), ex);
+            logger.error(String.format("SoccerService.findTeamById: Failed to query database for id: %s", id), ex);
+            throw new SoccerServiceException(String.format("SoccerService.findTeamById: Failed to query database for id: %s", id), ex);
         }
     }
+
+    public EnglandTeam findTeamByCode(String code) throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            String sqlFetchTeamById = " SELECT * FROM EnglandTeam WHERE teamCode= :codeParam ; ";
+
+            return conn.createQuery(sqlFetchTeamById)
+                    .addParameter("codeParam", code)
+                    .executeAndFetchFirst(EnglandTeam.class);
+
+        } catch (Sql2oException ex) {
+            logger.error(String.format("SoccerService.findTeamById: Failed to query database for code: %s", code), ex);
+            throw new SoccerServiceException(String.format("SoccerService.findTeamById: Failed to query database for id: %s", code), ex);
+        }
+    }
+
+
 
     public void readCSV() throws SoccerServiceException {
         try (Connection conn = db.open()) {
