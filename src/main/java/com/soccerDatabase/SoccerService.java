@@ -514,12 +514,18 @@ public class SoccerService {
             ManualDataGenerator generator = new ManualDataGenerator();
             Map<String, List<String>> referees = generator.manualSetReferee();
 
+            System.out.println("map fetched");
+
             List<EnglandReferee> englandReferees = new ArrayList<>();
 
             for (Map.Entry eachReferee : referees.entrySet() ) {
+
+                System.out.println((String) eachReferee.getKey());
+
                 List<String> eachRefereeProfile = (List<String>) eachReferee.getValue();
                 String[] eachRefereeProfileEntries = (String[]) eachRefereeProfile.toArray();
-                int dateNumber = 86400 * (int) (LocalDate.parse(eachRefereeProfileEntries[3],DateTimeFormatter.ISO_LOCAL_DATE)).toEpochDay();
+
+                int dateNumber = 86400 * (int) (LocalDate.parse(eachRefereeProfileEntries[2],DateTimeFormatter.ISO_LOCAL_DATE)).toEpochDay();
                 englandReferees.add(new EnglandReferee(eachRefereeProfileEntries[0],
                         eachRefereeProfileEntries[1],
                         eachRefereeProfileEntries[2],
