@@ -391,18 +391,19 @@ public class SoccerService {
                     + " preferred_foot as foot"
                     + " FROM Player_Attributes; ";
 
-            List<AnyPlayerAttributes> allPlayerAttributes = conn.createQuery(sqlFetchAllPlayerAttributes)
+            List<AnyPlayerAttributes> allPlayerAttributesDuplicated = conn.createQuery(sqlFetchAllPlayerAttributes)
                     .executeAndFetch(AnyPlayerAttributes.class);
 
-            System.out.printf("%d tuples fetched into memory%n", allPlayerAttributes.size());
+            System.out.printf("%d tuples fetched into memory%n", allPlayerAttributesDuplicated.size());
 
+            List<EnglandPlayerAttributes> allPlayerAttributes = new ArrayList<>();
             List<EnglandPlayerAttributes> englandPlayerAttributes = new ArrayList<>();
 
             Map<Integer, Integer> maxCounters = new HashMap<>();
 
             Integer tempCounter;
 
-            for (AnyPlayerAttributes eachAttributes : allPlayerAttributes) {
+            for (AnyPlayerAttributes eachAttributes : allPlayerAttributesDuplicated) {
 
                 tempCounter = maxCounters.get(eachAttributes.getId());
 
@@ -418,13 +419,24 @@ public class SoccerService {
 
             System.out.printf("%d entries currently in the map%n", maxCounters.keySet().size());
 
-            for (AnyPlayerAttributes eachAttributes : allPlayerAttributes ) {
+            for (AnyPlayerAttributes eachAttributes : allPlayerAttributesDuplicated ) {
                 if(maxCounters.get(eachAttributes.getId()) == eachAttributes.getCounter()) {
-                    englandPlayerAttributes.add(new EnglandPlayerAttributes(eachAttributes.getId(),eachAttributes.getRating(),eachAttributes.getPotential(),eachAttributes.getFoot()));
+                    allPlayerAttributes.add(new EnglandPlayerAttributes(eachAttributes.getId(),eachAttributes.getRating(),eachAttributes.getPotential(),eachAttributes.getFoot()));
                 }
             }
 
-            System.out.printf("%d tuples with the maximum counter for each playerId are selected %n", englandPlayerAttributes.size());
+            System.out.printf("%d tuples with the maximum counter for each playerId are selected %n", allPlayerAttributes.size());
+
+            List<EnglandPlayer> englandPlayers = conn.createQuery(" SELECT * FROM EnglandPlayer; ").executeAndFetch(EnglandPlayer.class);
+
+            for (EnglandPlayerAttributes eachAttributes : allPlayerAttributes ) {
+                for (EnglandPlayer eachPlayer : englandPlayers ) {
+                    if (eachPlayer.getId()==eachAttributes.getId()) {
+                        englandPlayerAttributes.add(eachAttributes);
+                        break;
+                    }
+                }
+            }
 
             String sqlInsertPlayerAttributes = " INSERT INTO EnglandPlayerAttributes VALUES (:id, "
                     + " :rating, "
@@ -433,11 +445,11 @@ public class SoccerService {
 
             for (EnglandPlayerAttributes eachAttributes : englandPlayerAttributes ) {
                 conn.createQuery(sqlInsertPlayerAttributes)
-                        .bind(eachAttributes)
+                        .bind(eachAttribgtes)
                         .executeUpdate();
             }
 
-            System.out.printf("%d tuples put back into table EnglandPlayerAttributes with birthdayNumber generated%n", englandPlayerAttributes.size());
+            System.out.printf("%d tuples put back into table EnglandPlayerAttributes with birthdayNumber generated%n", allPlayerAttributes.size());
 
             updateLog("PlayerAttributes", conn);
 
