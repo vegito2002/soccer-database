@@ -59,7 +59,17 @@ public class SoccerController {
             try {
                 return soccerService.findTeamByCode(request.queryParams("code"));
             } catch (SoccerService.SoccerServiceException ex) {
-                logger.error(String.format("Failed to find object with id: %s", request.params(":id")));
+                logger.error(String.format("Failed to find object with code: %s", request.params(":code")));
+                response.status(500);
+                return Collections.EMPTY_MAP;
+            }
+        }, new JsonTransformer());
+
+        get(API_CONTEXT + "/teambyname", "application/json", (request, response) -> {
+            try {
+                return soccerService.findTeamByName(request.queryParams("name"));
+            } catch (SoccerService.SoccerServiceException ex) {
+                logger.error(String.format("Failed to find object with name: %s", request.params(":name")));
                 response.status(500);
                 return Collections.EMPTY_MAP;
             }

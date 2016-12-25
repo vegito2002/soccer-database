@@ -88,11 +88,30 @@ public class SoccerService {
 
         } catch (Sql2oException ex) {
             logger.error(String.format("SoccerService.findTeamById: Failed to query database for code: %s", code), ex);
-            throw new SoccerServiceException(String.format("SoccerService.findTeamById: Failed to query database for id: %s", code), ex);
+            throw new SoccerServiceException(String.format("SoccerService.findTeamById: Failed to query database for code: %s", code), ex);
         }
     }
 
+    public EnglandTeam findTeamByName(String name) throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            List<EnglandTeam> teams = conn.createQuery(" SELECT * FROM EnglandTeam; ")
+                    .executeAndFetch(EnglandTeam.class);
 
+            for (EnglandTeam eachTeam : teams ) {
+                if (eachTeam
+                        .getTeamName()
+                        .toUpperCase()
+                        .contains(name
+                                .toUpperCase())) return eachTeam;
+            }
+
+            return null;
+
+        } catch (Sql2oException ex) {
+            logger.error(String.format("SoccerService.findTeamById: Failed to query database for name: %s", name), ex);
+            throw new SoccerServiceException(String.format("SoccerService.findTeamById: Failed to query database for name: %s", name), ex);
+        }
+    }
 
     public void readCSV() throws SoccerServiceException {
         try (Connection conn = db.open()) {
