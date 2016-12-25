@@ -381,7 +381,7 @@ public class SoccerService {
 
     public void initializePlayerAttributes() throws SoccerServiceException {
         try (Connection conn = db.open()) {
-//            if(!checkUpdatePermission("PlayerAttributes", conn)) return;
+            if(!checkUpdatePermission("PlayerAttributes", conn)) return;
             System.out.println("Starting to initialize table EnglandPlayerAttributes");
 
             String sqlFetchAllPlayerAttributes = " SELECT id AS counter, "
@@ -437,9 +437,9 @@ public class SoccerService {
                         .executeUpdate();
             }
 
-//            System.out.printf("%d tuples put back into table EnglandPlayer with birthdayNumber generated%n", englandPlayers.size());
+            System.out.printf("%d tuples put back into table EnglandPlayerAttributes with birthdayNumber generated%n", englandPlayerAttributes.size());
 
-//            updateLog("Player", conn);
+            updateLog("PlayerAttributes", conn);
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandPlayerAttributes table", ex);
