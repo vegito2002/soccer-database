@@ -457,21 +457,21 @@ public class SoccerService {
 
     public void initializeManager() throws SoccerServiceException {
         try (Connection conn = db.open()) {
+            if (!checkUpdatePermission("Manager", conn)) return;
+            System.out.println("Starting to initialize table EnglandManager");
+
             ManualDataGenerator generator = new ManualDataGenerator();
             Map<Integer, List<String>> managerProfiles = generator.manualSetManager();
-
-            System.out.println(managerProfiles.size());
 
             List<EnglandManager> englandManagers = new ArrayList<>();
 
             for (Map.Entry eachManagerProfile : managerProfiles.entrySet() ) {
 
-                System.out.println((int)eachManagerProfile.getKey());
-
                 List<String> eachManagerProfileList = (List<String>) eachManagerProfile.getValue();
                 String[] managerProfileEntries = (String[]) eachManagerProfileList.toArray();
 
                 int teamIdToAdd = (int) eachManagerProfile.getKey();
+
                 int dateNumber = 86400 * (int) (LocalDate.parse(managerProfileEntries[1],DateTimeFormatter.ISO_LOCAL_DATE)).toEpochDay();
 
                 englandManagers.add(new EnglandManager(managerProfileEntries[0],
@@ -481,11 +481,21 @@ public class SoccerService {
                         dateNumber));
             }
 
+            String sqlInsertManager = " INSERT INTO EnglandManager VALUES(:name, "
+                    + " :teamId, "
+                    + " :birthday, "
+                    + " :birthCity, "
+                    + " :birthdayNumber); ";
+
             for (EnglandManager eachManager : englandManagers) {
-                System.out.println(eachManager);
+                conn.createQuery(sqlInsertManager)
+                        .bind(eachManager)
+                        .executeUpdate();
             }
 
-            System.out.println(englandManagers.size());
+            System.out.printf("%d tuples put back into table EnglandManager%n", englandManagers.size());
+
+            updateLog("Manager", conn);
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandManager table", ex);
