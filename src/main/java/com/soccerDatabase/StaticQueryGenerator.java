@@ -75,4 +75,6 @@ public class StaticQueryGenerator {
                     + " potential INTEGER, "
                     + " foot TEXT, PRIMARY KEY(id)); ";
 
+    pulic final
+
 }

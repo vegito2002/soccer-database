@@ -506,4 +506,94 @@ public class ManualDataGenerator {
 
         return result;
     }
+
+    public Map<String, List<String>> manualSetReferee() {
+        Map<String, List<String>> result = new HashMap<>();
+        result.put("J Moss", Arrays.asList("J Moss",
+                "Jonathan Moss",
+                "1970-10-18",
+                "Sunderland"));
+
+        result.put("C Pawson", Arrays.asList("C Pawson",
+                "Craig Pawson",
+                "1979-01-01",
+                "South Yorkshire"));
+
+        result.put("M Atkinson", Arrays.asList("M Atkinson",
+                "Martin Atkinson",
+                "1971-03-31",
+                "Bradford"));
+
+        result.put("M Dean", Arrays.asList("M Dean",
+                "Mike Dean",
+                "1968-06-02",
+                "Wirral"));
+
+        result.put("R Madley", Arrays.asList("R Madley",
+                "Bobby Madley",
+                "1985-10-06",
+                "Wakefield"));
+
+        result.put("K Friend", Arrays.asList("K Friend",
+                "Kevin Friend",
+                "1971-07-08",
+                "Bristol"));
+
+        result.put("R East", Arrays.asList("R East",
+                "Roger East",
+                "1965-05-12",
+                "Unknown"));
+
+        result.put("M Oliver", Arrays.asList("M Oliver",
+                "Michael Oliver",
+                "1985-02-20",
+                "Ashington"));
+
+        result.put("A Marriner", Arrays.asList("A Marriner",
+                "Andre Marriner",
+                "1971-01-01",
+                "Birmingham"));
+
+        result.put("A Taylor", Arrays.asList("A Taylor",
+                "Anthony Taylor",
+                "1978-10-20",
+                "Manchester"));
+
+        result.put("L Mason", Arrays.asList("L Mason",
+                "Lee Mason",
+                "1971-10-29",
+                "Portsmouth"));
+
+        result.put("M Clattenburg", Arrays.asList("M Clattenburg",
+                "Mark Clattenburg",
+                "1975-03-13",
+                "Consett"));
+
+        result.put("S Attwell", Arrays.asList("S Attwell",
+                "Stuart Attwell",
+                "1982-10-06",
+                "Nuneaton"));
+
+        result.put("N Swarbrick", Arrays.asList("N Swarbrick",
+                "Neil Swarbrick",
+                "1965-12-20",
+                "Preston"));
+
+        result.put("P Tierney", Arrays.asList("P Tierney",
+                "Paul Tierney",
+                "1980-01-01",
+                "Unknown"));
+
+        result.put("M Jones", Arrays.asList("M Jones",
+                "Mike Jones",
+                "1968-04-18",
+                "Chester"));
+
+        result.put("G Scott", Arrays.asList("G Scott",
+                "Graham Scott",
+                "1968-01-01",
+                "Oxfordshire"));
+
+        return result;
+    }
 }
