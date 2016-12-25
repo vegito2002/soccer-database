@@ -17,4 +17,55 @@ public class EnglandReferee {
         this.birthCity = birthCity;
         this.birthdayNumber = birthdayNumber;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getBirthCity() {
+        return birthCity;
+    }
+
+    public void setBirthCity(String birthCity) {
+        this.birthCity = birthCity;
+    }
+
+    public int getBirthdayNumber() {
+        return birthdayNumber;
+    }
+
+    public void setBirthdayNumber(int birthdayNumber) {
+        this.birthdayNumber = birthdayNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "EnglandReferee{" +
+                "name='" + name + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", birthCity='" + birthCity + '\'' +
+                ", birthdayNumber=" + birthdayNumber +
+                '}';
+    }
 }

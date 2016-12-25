@@ -56,6 +56,7 @@ public class SoccerService {
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER).executeUpdate();
             conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_PLAYER_ATTRIBUTES).executeUpdate();
+            conn.createQuery(generator.SQL_CREATETABLE_ENGLAND_REFEREE).executeUpdate();
             conn.createQuery(" DROP TABLE IF EXISTS Match; ").executeUpdate();
             conn.createQuery(" VACUUM; ").executeUpdate();
 
@@ -312,7 +313,6 @@ public class SoccerService {
                 }
             }
 
-            //            for (EnglandTeamAttributes eachAttributes : englandAttributes ) System.out.println(eachAttributes);
             String sqlInsertEnglandTeamAttributes = " INSERT INTO EnglandTeamAttributes VALUES "
                     + " (:id, "
                     + " :buildUpPlaySpeedClass, "
@@ -506,6 +506,33 @@ public class SoccerService {
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandMembership table", ex);
             throw new SoccerServiceException("Failed to initialize EnglandMembership table", ex);
+        }
+    }
+
+    public void initializeReferee() throws SoccerServiceException {
+        try (Connection conn = db.open()) {
+            ManualDataGenerator generator = new ManualDataGenerator();
+            Map<String, List<String>> referees = generator.manualSetReferee();
+
+            List<EnglandReferee> englandReferees = new ArrayList<>();
+
+            for (Map.Entry eachReferee : referees.entrySet() ) {
+                List<String> eachRefereeProfile = (List<String>) eachReferee.getValue();
+                String[] eachRefereeProfileEntries = (String[]) eachRefereeProfile.toArray();
+                int dateNumber = 86400 * (int) (LocalDate.parse(eachRefereeProfileEntries[3],DateTimeFormatter.ISO_LOCAL_DATE)).toEpochDay();
+                englandReferees.add(new EnglandReferee(eachRefereeProfileEntries[0],
+                        eachRefereeProfileEntries[1],
+                        eachRefereeProfileEntries[2],
+                        eachRefereeProfileEntries[3],
+                        dateNumber));
+            }
+            for (EnglandReferee eachReferee : englandReferees ) {
+                System.out.println(eachReferee);
+            }
+
+        } catch (Sql2oException ex) {
+            logger.error("Failed to initialize EnglandReferee table", ex);
+            throw new SoccerServiceException("Failed to initialize EnglandReferee table", ex);
         }
     }
 
