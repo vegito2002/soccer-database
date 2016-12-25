@@ -421,7 +421,6 @@ public class SoccerService {
 
             for (Map.Entry eachReferee : referees.entrySet() ) {
 
-
                 List<String> eachRefereeProfile = (List<String>) eachReferee.getValue();
                 String[] eachRefereeProfileEntries = (String[]) eachRefereeProfile.toArray();
 
@@ -461,12 +460,32 @@ public class SoccerService {
             ManualDataGenerator generator = new ManualDataGenerator();
             Map<Integer, List<String>> managerProfiles = generator.manualSetManager();
 
+            System.out.println(managerProfiles.size());
 
+            List<EnglandManager> englandManagers = new ArrayList<>();
 
             for (Map.Entry eachManagerProfile : managerProfiles.entrySet() ) {
-                String[] managerProfileEntries = (String[]) ((ArrayList<String>)eachManagerProfile.getValue()).toArray();
 
+                System.out.println((int)eachManagerProfile.getKey());
+
+                List<String> eachManagerProfileList = (List<String>) eachManagerProfile.getValue();
+                String[] managerProfileEntries = (String[]) eachManagerProfileList.toArray();
+
+                int teamIdToAdd = (int) eachManagerProfile.getKey();
+                int dateNumber = 86400 * (int) (LocalDate.parse(managerProfileEntries[1],DateTimeFormatter.ISO_LOCAL_DATE)).toEpochDay();
+
+                englandManagers.add(new EnglandManager(managerProfileEntries[0],
+                        teamIdToAdd,
+                        managerProfileEntries[1],
+                        managerProfileEntries[2],
+                        dateNumber));
             }
+
+            for (EnglandManager eachManager : englandManagers) {
+                System.out.println(eachManager);
+            }
+
+            System.out.println(englandManagers.size());
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandManager table", ex);

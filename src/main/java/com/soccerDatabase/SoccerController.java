@@ -36,6 +36,7 @@ public class SoccerController {
                 soccerService.initializePlayer();
                 soccerService.initializePlayerAttributes();
                 soccerService.initializeReferee();
+                soccerService.initializeManager();
                 response.status(201);
             } catch  (SoccerService.SoccerServiceException ex) {
                 logger.error("Failed to fetch the list of todos");
