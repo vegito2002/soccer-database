@@ -445,7 +445,7 @@ public class SoccerService {
 
             for (EnglandPlayerAttributes eachAttributes : englandPlayerAttributes ) {
                 conn.createQuery(sqlInsertPlayerAttributes)
-                        .bind(eachAttribgtes)
+                        .bind(eachAttributes)
                         .executeUpdate();
             }
 
