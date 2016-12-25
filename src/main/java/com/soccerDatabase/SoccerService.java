@@ -511,6 +511,9 @@ public class SoccerService {
 
     public void initializeReferee() throws SoccerServiceException {
         try (Connection conn = db.open()) {
+            if (!checkUpdatePermission("Referee", conn)) return;
+            System.out.println("Starting to initialize table EnglandReferee");
+
             ManualDataGenerator generator = new ManualDataGenerator();
             Map<String, List<String>> referees = generator.manualSetReferee();
 
@@ -543,7 +546,9 @@ public class SoccerService {
                         .executeUpdate();
             }
 
-            System.out.printf("%d tuples put back into table EnglandReferee", englandReferees.size());
+            System.out.printf("%d tuples put back into table EnglandReferee%n", englandReferees.size());
+
+            updateLog("Referee", conn);
 
         } catch (Sql2oException ex) {
             logger.error("Failed to initialize EnglandReferee table", ex);
