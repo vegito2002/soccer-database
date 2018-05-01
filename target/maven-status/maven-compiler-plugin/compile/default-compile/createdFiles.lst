@@ -1,0 +1,17 @@
+com/soccerDatabase/AnyPlayerAttributes.class
+com/soccerDatabase/SoccerService.class
+com/soccerDatabase/EnglandManager.class
+com/soccerDatabase/EnglandReferee.class
+com/soccerDatabase/SoccerController.class
+com/soccerDatabase/StaticQueryGenerator.class
+com/soccerDatabase/EnglandPlayer.class
+com/soccerDatabase/Bootstrap.class
+com/soccerDatabase/SoccerService$SoccerServiceException.class
+com/soccerDatabase/EnglandPlayerAttributes.class
+com/soccerDatabase/CSVReader.class
+com/soccerDatabase/EnglandMatch.class
+com/soccerDatabase/EnglandTeam.class
+com/soccerDatabase/EnglandMembership.class
+com/soccerDatabase/JsonTransformer.class
+com/soccerDatabase/ManualDataGenerator.class
+com/soccerDatabase/EnglandTeamAttributes.class

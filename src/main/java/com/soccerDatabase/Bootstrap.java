@@ -38,7 +38,7 @@ public class Bootstrap {
         port(PORT);
 
         //Specify the sub-directory from which to serve static resources (like html and css)
-//        staticFileLocation("/public");
+        //        staticFileLocation("/public");
 
         //Create the model instance and then configure and start the web service
         try {
